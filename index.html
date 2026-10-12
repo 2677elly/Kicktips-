@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#1456c0">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<meta name="description" content="KickTips — manually published football tips and results tracking.">
+<title>KickTips | Football Tips</title>
+<style>
+:root{--blue:#1456c0;--blue2:#0b347b;--pale:#edf4ff;--ink:#15243a;--muted:#64748b;--line:#dbe5f2;--bg:#f5f8fd;--white:#fff;--green:#e1f7ea;--greenink:#12683b;--amber:#fff3d7;--amberink:#865900;--red:#ffe6e6;--redink:#9c2929}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
+header{background:linear-gradient(135deg,var(--blue2),var(--blue));color:white;padding:22px 16px 27px;border-radius:0 0 26px 26px}
+.wrap{max-width:900px;margin:auto}.nav{display:flex;justify-content:space-between;align-items:center;gap:12px}.logo{font-size:23px;font-weight:900;letter-spacing:-.5px}.logo span{color:#b9d4ff}.tag{font-size:12px;color:#d9e7ff;margin-top:3px}.live{font-size:11px;font-weight:800;background:#ffffff20;border:1px solid #ffffff45;border-radius:99px;padding:7px 10px}
+.hero{padding:26px 0 5px}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;color:#c9dcff}.hero h1{font-size:clamp(26px,6vw,39px);line-height:1.1;margin:8px 0 10px;letter-spacing:-1px}.hero p{margin:0;color:#e2ecff;max-width:570px;font-size:14px;line-height:1.55}
+main{max-width:900px;margin:0 auto;padding:16px 14px 42px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 17px}.stat,.panel,.tip{background:var(--white);border:1px solid var(--line);border-radius:17px}.stat{padding:14px}.stat strong{display:block;font-size:24px;letter-spacing:-.5px}.stat span{font-size:11px;color:var(--muted)}
+.panel{padding:14px;margin-bottom:14px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 12px}.section-head h2{font-size:17px;margin:0}.count{font-size:11px;color:var(--muted)}
+.controls{display:flex;gap:8px;flex-wrap:wrap}.controls input,.controls select{min-width:0;flex:1;padding:11px;border:1px solid var(--line);border-radius:11px;background:white;color:var(--ink);font:inherit;font-size:13px}
+.tip{padding:15px;margin-bottom:10px}.tip-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.league{font-size:10px;letter-spacing:.9px;text-transform:uppercase;color:var(--muted);font-weight:800}.teams{font-size:17px;font-weight:850;line-height:1.3;margin:6px 0 11px}.vs{color:#91a0b4;font-weight:500;font-size:12px;padding:0 4px}.status{white-space:nowrap;font-size:10px;font-weight:850;padding:6px 8px;border-radius:99px}.Pending{background:var(--amber);color:var(--amberink)}.Won{background:var(--green);color:var(--greenink)}.Lost{background:var(--red);color:var(--redink)}.Void{background:#edf0f5;color:#596579}
+.pick{display:inline-flex;align-items:center;gap:7px;background:var(--pale);color:var(--blue2);padding:9px 11px;border-radius:10px;font-weight:800;font-size:13px}.details{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.detail{font-size:11px;color:var(--muted);background:#f7f9fc;border:1px solid #e8eef7;padding:5px 7px;border-radius:7px}.notes{font-size:12px;color:#506079;line-height:1.5;margin:10px 0 0}
+.empty{text-align:center;padding:28px 12px;color:var(--muted);font-size:13px}.footnote{font-size:11px;line-height:1.55;color:var(--muted);padding:2px 4px}.footnote a{color:var(--blue)}
+footer{text-align:center;color:#7a879a;font-size:11px;padding:0 12px 24px}
+@media(min-width:620px){main{padding-top:22px}.tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tip{margin-bottom:0}.stat{padding:16px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="nav"><div><div class="logo">⚽ Kick<span>Tips</span></div><div class="tag">Football tips • Clear records • No guarantees</div></div><div class="live">PUBLIC TIPS</div></div>
+  <div class="hero"><div class="eyebrow">Matchday dashboard</div><h1>Football tips, in one place.</h1><p>Browse manually published match picks and check their recorded results. Every prediction is an opinion, not a promise.</p></div>
+</div></header>
+<main>
+  <section class="stats">
+    <div class="stat"><strong id="total">0</strong><span>Published tips</span></div>
+    <div class="stat"><strong id="pending">0</strong><span>Pending results</span></div>
+    <div class="stat"><strong id="winrate">—</strong><span>Recorded win rate*</span></div>
+  </section>
+  <section class="panel">
+    <div class="section-head"><h2>Find a tip</h2><span class="count" id="updated">Loading tips…</span></div>
+    <div class="controls">
+      <input id="search" type="search" placeholder="Search teams or league…" aria-label="Search tips">
+      <select id="status" aria-label="Filter by result"><option value="All">All results</option><option value="Pending">Pending</option><option value="Won">Won</option><option value="Lost">Lost</option><option value="Void">Void</option></select>
+    </div>
+  </section>
+  <div class="section-head" style="padding:0 3px"><h2>Published tips</h2><span class="count" id="shown"></span></div>
+  <div id="tipList" class="tips-grid"><div class="panel empty">Loading published tips…</div></div>
+  <p class="footnote">*Win rate is wins divided by tips marked Won or Lost; void tips are excluded. Past results do not predict future outcomes. Betting can cause financial harm; only adults should bet, never borrow to gamble, and follow local laws.</p>
+</main>
+<footer>© <span id="year"></span> KickTips · Football opinions, responsibly presented.</footer>
+<script>
+const FALLBACK = [
+ {league:"Sample league",home:"Home team",away:"Away team",date:"",market:"Example: Over 1.5 goals",odds:"",confidence:"",notes:"Replace this sample with your own real tip before publishing.",status:"Pending"}
+];
+let tips=[];
+const $=id=>document.getElementById(id);
+const safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function render(){
+ const settled=tips.filter(t=>t.status==="Won"||t.status==="Lost");
+ $("total").textContent=tips.length;
+ $("pending").textContent=tips.filter(t=>(t.status||"Pending")==="Pending").length;
+ $("winrate").textContent=settled.length?Math.round(settled.filter(t=>t.status==="Won").length/settled.length*100)+"%":"—";
+ const q=$("search").value.trim().toLowerCase(), status=$("status").value;
+ const list=tips.filter(t=>(status==="All"||(t.status||"Pending")===status)&&[t.home,t.away,t.league,t.market].join(" ").toLowerCase().includes(q));
+ $("shown").textContent=list.length+" shown";
+ if(!list.length){$("tipList").innerHTML='<div class="panel empty">No tips match your search. Try another team or result filter.</div>';return;}
+ $("tipList").innerHTML=list.map(t=>`<article class="tip">
+ <div class="tip-top"><div><div class="league">${safe(t.league||"Football match")}</div><div class="teams">${safe(t.home)} <span class="vs">VS</span> ${safe(t.away)}</div></div><span class="status ${safe(t.status||"Pending")}">${safe(t.status||"Pending")}</span></div>
+ <div class="pick">⚑ ${safe(t.market||"Tip not specified")}</div>
+ <div class="details">${t.date?`<span class="detail">📅 ${safe(t.date)}</span>`:""}${t.odds?`<span class="detail">Odds: ${safe(t.odds)}</span>`:""}${t.confidence?`<span class="detail">Confidence: ${safe(t.confidence)}</span>`:""}</div>
+ ${t.notes?`<p class="notes">${safe(t.notes)}</p>`:""}
+ </article>`).join("");
+}
+async function loadTips(){
+ try{
+   const response=await fetch("./tips.json",{cache:"no-store"});
+   if(!response.ok)throw new Error("tips.json not found");
+   const data=await response.json();
+   if(!Array.isArray(data))throw new Error("Expected a JSON array");
+   tips=data;
+   $("updated").textContent="Loaded from tips.json";
+ }catch(e){
+   tips=FALLBACK;
+   $("updated").textContent="Sample preview — publish tips.json";
+ }
+ render();
+}
+$("search").addEventListener("input",render);
+$("status").addEventListener("change",render);
+$("year").textContent=new Date().getFullYear();
+loadTips();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+}
+</script>
+
+</body>
+</html>
